@@ -10,6 +10,9 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// ! Route Import
+const publicRoute = require("./routers/public");
+
 const client = new MongoClient(process.env.MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -22,11 +25,21 @@ async function run() {
   try {
     client.connect();
     //! Code here
+    const db = client.db("programmer-fashion");
+
+    // !Collection Middleware
+    app.use((req, res, next) => {
+      req.productCollection = db.collection("products");
+      req.testimonialCollection = db.collection("testimonials");
+      req.teamCollection = db.collection("our-teams");
+      next();
+    });
+
+    // ! Router Middleware
+    app.use("/", publicRoute);
 
     await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Successfully connected to MongoDB!"
-    );
+    console.log("Successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
