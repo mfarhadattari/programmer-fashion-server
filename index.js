@@ -32,6 +32,8 @@ async function run() {
       req.productCollection = db.collection("products");
       req.testimonialCollection = db.collection("testimonials");
       req.teamCollection = db.collection("our-teams");
+      req.productReviewCollection = db.collection("products-reviews")
+      req.orderCollection = db.collection("orders")
       next();
     });
 
