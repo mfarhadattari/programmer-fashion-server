@@ -8,6 +8,7 @@ router.post("/add-to-cart", jwtVerify, async (req, res) => {
   const cartInfo = req.body;
   const query = {
     productID: cartInfo.productID,
+    email: cartInfo.email,
   };
   const alreadyAdded = await cartCollection.findOne(query);
   if (alreadyAdded) {
@@ -28,9 +29,20 @@ router.post("/add-to-cart", jwtVerify, async (req, res) => {
 // ! TOTAL CART
 router.get("/total-cart", jwtVerify, async (req, res) => {
   const cartCollection = req.cartCollection;
-  const query = {email : req.decoded.email};
+  const query = { email: req.decoded.email };
   const totalCart = await cartCollection.countDocuments(query);
-  res.send({totalCart: totalCart})
+  res.send({ totalCart: totalCart });
+});
+
+// !My Cart
+router.get("/my-cart", jwtVerify, async (req, res) => {
+  const cartCollection = req.cartCollection;
+  const query = { email: req.decoded.email };
+  const myCart = await cartCollection
+    .find(query)
+    .sort({ timeDate: -1 })
+    .toArray();
+  res.send(myCart);
 });
 
 module.exports = router;
