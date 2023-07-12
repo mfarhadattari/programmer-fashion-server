@@ -19,6 +19,20 @@ router.get("/products/:id", async (req, res) => {
   res.send(product);
 });
 
+// !---------------- Product Reviews ---------------
+router.get("/product-reviews/:id", async (req, res) => {
+  const productReviewCollection = req.productReviewCollection;
+  const id = req.params.id;
+  const productReviews = await productReviewCollection
+    .find({
+      productID: id,
+    })
+    .sort({ timeDate: -1 })
+    .limit(12)
+    .toArray();
+  res.send(productReviews.reverse());
+});
+
 // ! ---------------- New Products --------------------
 router.get("/new-products", async (req, res) => {
   const productCollection = req.productCollection;
