@@ -33,4 +33,18 @@ router.post("/generate-jwt", async (req, res) => {
   res.send({ token });
 });
 
+// ! ------------------ Update User Info -------------------
+router.patch("/update-info", jwtVerify, async (req, res) => {
+  const userCollection = req.userCollection;
+  const query = { email: req.decoded.email };
+  const data = req.body;
+  const updateDoc = {
+    $set: {
+      ...data,
+    },
+  };
+  const updateResult = await userCollection.updateOne(query, updateDoc);
+  res.send(updateResult);
+});
+
 module.exports = router;
