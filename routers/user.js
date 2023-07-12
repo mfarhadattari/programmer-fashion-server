@@ -25,4 +25,12 @@ router.post("/add-to-cart", jwtVerify, async (req, res) => {
   res.send(addResult);
 });
 
+// ! TOTAL CART
+router.get("/total-cart", jwtVerify, async (req, res) => {
+  const cartCollection = req.cartCollection;
+  const query = {email : req.decoded.email};
+  const totalCart = await cartCollection.countDocuments(query);
+  res.send({totalCart: totalCart})
+});
+
 module.exports = router;
