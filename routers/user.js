@@ -1,6 +1,6 @@
 const express = require("express");
 const { jwtVerify } = require("../middlewares/middlewares");
-const {ObjectId} = require("mongodb")
+const { ObjectId } = require("mongodb");
 const router = express.Router();
 
 //! Add to cart
@@ -42,6 +42,20 @@ router.delete("/delete-cart/:id", jwtVerify, async (req, res) => {
   const query = { _id: new ObjectId(req.params.id), email: req.decoded.email };
   const deleteResult = await cartCollection.deleteOne(query);
   res.send(deleteResult);
+});
+
+// !Update Cart Quantity
+router.patch("/update-quantity/:id", jwtVerify, async (req, res) => {
+  const cartCollection = req.cartCollection;
+  const query = { _id: new ObjectId(req.params.id) };
+  const { quantity } = req.body;
+  const updateDoc = {
+    $set: {
+      quantity: quantity,
+    },
+  };
+  const updatedResult = await cartCollection.updateOne(query, updateDoc);
+  res.send(updatedResult);
 });
 
 // !My Cart
