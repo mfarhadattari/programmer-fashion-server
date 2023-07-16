@@ -29,7 +29,7 @@ router.get("/get-user", jwtVerify, async (req, res) => {
 // !------------------- Generate JWT Token -------------------
 router.post("/generate-jwt", async (req, res) => {
   const data = req.body;
-  const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "1d" });
   res.send({ token });
 });
 

@@ -14,6 +14,7 @@ app.use(express.json());
 const publicRoute = require("./routers/public");
 const othersRoute = require("./routers/others");
 const userRoute = require("./routers/user");
+const paymentRoute = require("./routers/payment");
 
 const client = new MongoClient(process.env.MONGODB_URI, {
   serverApi: {
@@ -37,6 +38,7 @@ async function run() {
       req.productReviewCollection = db.collection("products-reviews");
       req.cartCollection = db.collection("carts");
       req.orderCollection = db.collection("orders");
+      req.paymentCollection = db.collection("payments");
       req.userCollection = db.collection("users");
       next();
     });
@@ -45,6 +47,7 @@ async function run() {
     app.use("/", publicRoute);
     app.use("/", othersRoute);
     app.use("/", userRoute);
+    app.use("/", paymentRoute);
 
     await client.db("admin").command({ ping: 1 });
     console.log("Successfully connected to MongoDB!");
