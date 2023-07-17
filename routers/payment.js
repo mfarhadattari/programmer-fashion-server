@@ -5,7 +5,7 @@ const SSLCommerzPayment = require("sslcommerz-lts");
 const storeID = process.env.STORE_ID;
 const storePASS = process.env.STORE_PASS;
 const isLive = false;
-const url = "http://localhost:3000";
+const url = "https://programmer-fashion.vercel.app";
 
 router.post("/initialize-payment", async (req, res) => {
   const orderCollection = req.orderCollection;
@@ -26,8 +26,8 @@ router.post("/initialize-payment", async (req, res) => {
     currency: "BDT",
     tran_id: tran_id,
     success_url: `${url}/payment-success/${tran_id}`,
-    fail_url: "http://localhost:3030/fail",
-    cancel_url: "http://localhost:3030/cancel",
+    fail_url: `${url}/payment-failed/${tran_id}`,
+    cancel_url: `${url}/payment-failed/${tran_id}`,
     ipn_url: "http://localhost:3030/ipn",
     shipping_method: "Yes",
     product_name: "Product Name",
@@ -101,9 +101,15 @@ router.post("/payment-success/:tran_id", async (req, res) => {
   //   delete from cart
   const cartIds = order.products.map((item) => new ObjectId(item.cartId));
   const deleteCart = await cartCollection.deleteMany({ _id: { $in: cartIds } });
-  console.log(deleteCart);
+  res.redirect("https://programmer-fashion.netlify.app/payment-success");
+});
 
-  res.redirect("http://localhost:5173/payment-success");
+// ! Payment Failed and Cancel
+router.post("/payment-failed/:tran_id", async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const tran_id = req.params.tran_id;
+  const result = await orderCollection.deleteOne({ tran_id });
+  res.redirect("https://programmer-fashion.netlify.app/payment-fail");
 });
 
 module.exports = router;
