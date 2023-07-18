@@ -50,13 +50,15 @@ router.get("/popular-products", async (req, res) => {
   const orderCollection = req.orderCollection;
   const productCollection = req.productCollection;
   const aggregatePipelines = [
-    { $group: { _id: "$productsID" } },
+    { $unwind: "$products" },
+    { $group: { _id: "$products.productId", count: { $sum: 1 } } },
     { $sort: { count: -1 } },
     { $limit: 6 },
   ];
   const productsIDs = await orderCollection
     .aggregate(aggregatePipelines)
     .toArray();
+
   const ids = productsIDs.map((item) => new ObjectId(item._id));
   const popularProducts = await productCollection
     .find({ _id: { $in: ids } })
