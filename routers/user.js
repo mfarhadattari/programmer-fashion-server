@@ -74,7 +74,15 @@ router.get("/my-orders", jwtVerify, async (req, res) => {
   const orderCollection = req.orderCollection;
   const query = { email: req.decoded.email };
   const myOrders = await orderCollection.find(query).toArray();
-  res.send(myOrders);
+  res.send(myOrders.reverse());
+});
+
+// ! MY Payments
+router.get("/my-payments", jwtVerify, async (req, res) => {
+  const paymentCollection = req.paymentCollection;
+  const query = { email: req.decoded.email };
+  const payments = await paymentCollection.find(query).toArray();
+  res.send(payments.reverse());
 });
 
 module.exports = router;

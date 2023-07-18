@@ -96,7 +96,7 @@ router.post("/payment-success/:tran_id", async (req, res) => {
     amount: order.totalAmount,
     tran_id,
   };
-  const addPayment = await paymentCollection.insertOne({ paymentInfo });
+  const addPayment = await paymentCollection.insertOne(paymentInfo);
 
   //   delete from cart
   const cartIds = order.products.map((item) => new ObjectId(item.cartId));
