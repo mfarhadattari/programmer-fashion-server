@@ -69,4 +69,12 @@ router.get("/my-cart", jwtVerify, async (req, res) => {
   res.send(myCart);
 });
 
+// ! MY Orders
+router.get("/my-orders", jwtVerify, async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const query = { email: req.decoded.email };
+  const myOrders = await orderCollection.find(query).toArray();
+  res.send(myOrders);
+});
+
 module.exports = router;
