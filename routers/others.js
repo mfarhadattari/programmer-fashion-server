@@ -47,4 +47,13 @@ router.patch("/update-info", jwtVerify, async (req, res) => {
   res.send(updateResult);
 });
 
+// ! ------------------ IS Admin ------------------------
+router.get("/isAdmin", jwtVerify, async (req, res) => {
+  const userCollection = req.userCollection;
+  const query = { email: req.decoded.email };
+  const user = await userCollection.findOne(query);
+  const isAdmin = user?.role === "admin";
+  res.send({ isAdmin });
+});
+
 module.exports = router;
