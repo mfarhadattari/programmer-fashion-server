@@ -91,4 +91,27 @@ router.get("/my-payments", jwtVerify, async (req, res) => {
   res.send(payments);
 });
 
+// ! ---------------- User Overview --------------
+router.get("/my-overview", jwtVerify, async (req, res) => {
+  const userCollection = req.userCollection;
+  const cartCollection = req.cartCollection;
+  const orderCollection = req.orderCollection;
+  const paymentCollection = req.paymentCollection;
+  const query = { email: req.decoded.email };
+  const user = await userCollection.findOne(query, {
+    projection: { _id: 0, email: 1, displayName: 1, photoURL: 1 },
+  });
+  const totalCarts = await cartCollection.countDocuments(query);
+  const totalOrders = await orderCollection.countDocuments(query);
+  const payments = await paymentCollection
+    .find(query, { projection: { _id: 0, amount: 1 } })
+    .toArray();
+  const totalPayment = payments.reduce(
+    (totalAmount, payment) => payment.amount + totalAmount,
+    0
+  );
+
+  res.send({ userInfo: user, totalCarts, totalOrders, totalPayment });
+});
+
 module.exports = router;
