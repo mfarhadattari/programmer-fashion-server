@@ -24,4 +24,22 @@ const jwtVerify = (req, res, next) => {
   });
 };
 
-module.exports = { jwtVerify };
+const adminVerify = async (req, res, next) => {
+  const userCollection = req.userCollection;
+  const query = { email: req.decoded.email };
+  const user = await userCollection.findOne(query);
+  if (!user) {
+    return res
+      .status(401)
+      .send({ error: true, message: "Unauthorized Access" });
+  }
+  const isAdmin = user?.role === "admin";
+  if (!isAdmin) {
+    return res
+      .status(401)
+      .send({ error: true, message: "Unauthorized Access" });
+  }
+  next();
+};
+
+module.exports = { jwtVerify, adminVerify };

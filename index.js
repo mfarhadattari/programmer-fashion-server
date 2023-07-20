@@ -15,6 +15,7 @@ const publicRoute = require("./routers/public");
 const othersRoute = require("./routers/others");
 const userRoute = require("./routers/user");
 const paymentRoute = require("./routers/payment");
+const adminRoute = require("./routers/admin");
 
 const client = new MongoClient(process.env.MONGODB_URI, {
   serverApi: {
@@ -48,6 +49,7 @@ async function run() {
     app.use("/", othersRoute);
     app.use("/", userRoute);
     app.use("/", paymentRoute);
+    app.use("/admin", adminRoute);
 
     await client.db("admin").command({ ping: 1 });
     console.log("Successfully connected to MongoDB!");
