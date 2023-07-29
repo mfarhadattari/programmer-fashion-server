@@ -31,4 +31,22 @@ router.post("/add-product", jwtVerify, adminVerify, async (req, res) => {
   res.send(insertResult);
 });
 
+router.patch(
+  "/update-product/:id",
+  jwtVerify,
+  adminVerify,
+  async (req, res) => {
+    const productCollection = req.productCollection;
+    const query = { _id: new ObjectId(req.params.id) };
+    const data = req.body;
+    const updateDoc = {
+      $set: {
+        ...data,
+      },
+    };
+    const updatedResult = await productCollection.updateOne(query, updateDoc);
+    res.send(updatedResult);
+  }
+);
+
 module.exports = router;
