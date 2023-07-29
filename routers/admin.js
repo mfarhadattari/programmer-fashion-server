@@ -71,4 +71,14 @@ router.get("/all-order", jwtVerify, adminVerify, async (req, res) => {
   res.send(allOrder);
 });
 
+// ! all payment api
+router.get("/all-payment", jwtVerify, adminVerify, async (req, res) => {
+  const paymentCollection = req.paymentCollection;
+  const allPayments = await paymentCollection
+    .find()
+    .sort({ timeDate: -1 })
+    .toArray();
+  res.send(allPayments);
+});
+
 module.exports = router;
