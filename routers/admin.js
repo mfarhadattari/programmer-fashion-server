@@ -8,7 +8,7 @@ router.get("/all-products", jwtVerify, adminVerify, async (req, res) => {
   const productCollection = req.productCollection;
   const products = await productCollection
     .find()
-    .sort({ timeData: -1 })
+    .sort({ timeDate: -1 })
     .toArray();
   res.send(products);
 });
@@ -58,7 +58,17 @@ router.get("/all-customer", jwtVerify, adminVerify, async (req, res) => {
   const userCollection = req.userCollection;
   const allUser = await userCollection.find().toArray();
   const allCustomer = allUser.filter((user) => !user.role);
-  res.send(allCustomer);
+  res.send(allCustomer.reverse());
+});
+
+// ! all order api
+router.get("/all-order", jwtVerify, adminVerify, async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const allOrder = await orderCollection
+    .find()
+    .sort({ timeDate: -1 })
+    .toArray();
+  res.send(allOrder);
 });
 
 module.exports = router;
