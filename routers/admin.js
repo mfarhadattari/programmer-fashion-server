@@ -3,6 +3,7 @@ const { jwtVerify, adminVerify } = require("../middlewares/middlewares");
 const router = express.Router();
 const { ObjectId } = require("mongodb");
 
+// ! get all product api
 router.get("/all-products", jwtVerify, adminVerify, async (req, res) => {
   const productCollection = req.productCollection;
   const products = await productCollection
@@ -12,6 +13,7 @@ router.get("/all-products", jwtVerify, adminVerify, async (req, res) => {
   res.send(products);
 });
 
+// ! delete a product api
 router.delete(
   "/delete-product/:id",
   jwtVerify,
@@ -24,6 +26,7 @@ router.delete(
   }
 );
 
+// ! add a product api
 router.post("/add-product", jwtVerify, adminVerify, async (req, res) => {
   const productCollection = req.productCollection;
   const data = req.body;
@@ -31,6 +34,7 @@ router.post("/add-product", jwtVerify, adminVerify, async (req, res) => {
   res.send(insertResult);
 });
 
+// ! update a product api
 router.patch(
   "/update-product/:id",
   jwtVerify,
@@ -48,5 +52,13 @@ router.patch(
     res.send(updatedResult);
   }
 );
+
+// ! all customer api
+router.get("/all-customer", jwtVerify, adminVerify, async (req, res) => {
+  const userCollection = req.userCollection;
+  const allUser = await userCollection.find().toArray();
+  const allCustomer = allUser.filter((user) => !user.role);
+  res.send(allCustomer);
+});
 
 module.exports = router;
