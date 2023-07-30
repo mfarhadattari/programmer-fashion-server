@@ -127,7 +127,7 @@ router.get("/all-customer", jwtVerify, adminVerify, async (req, res) => {
 });
 
 // ! customer details api
-router.get("/customer/:id", async (req, res) => {
+router.get("/customer/:id",jwtVerify, adminVerify, async (req, res) => {
   const userCollection = req.userCollection;
   const orderCollection = req.orderCollection;
   const cartCollection = req.cartCollection;
