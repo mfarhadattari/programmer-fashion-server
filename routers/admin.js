@@ -127,13 +127,15 @@ router.get("/all-customer", jwtVerify, adminVerify, async (req, res) => {
 });
 
 // ! customer details api
-router.get("/customer", jwtVerify, adminVerify, async (req, res) => {
+router.get("/customer/:id", async (req, res) => {
   const userCollection = req.userCollection;
   const orderCollection = req.orderCollection;
   const cartCollection = req.cartCollection;
   const paymentCollection = req.paymentCollection;
-  const query = { email: req.query.email };
-  const userInfo = await userCollection.findOne(query);
+  const userInfo = await userCollection.findOne({
+    _id: new ObjectId(req.params.id),
+  });
+  const query = { email: userInfo.email };
   const orderInfo = await orderCollection
     .find(query, {
       sort: { timeDate: -1 },
