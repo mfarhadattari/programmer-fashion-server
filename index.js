@@ -12,7 +12,7 @@ app.use(express.json());
 
 // ! Route Import
 const publicRoute = require("./routers/public");
-const othersRoute = require("./routers/others");
+const authRoute = require("./routers/auth");
 const userRoute = require("./routers/user");
 const paymentRoute = require("./routers/payment");
 const adminRoute = require("./routers/admin");
@@ -46,7 +46,7 @@ async function run() {
 
     // ! Router Middleware
     app.use("/", publicRoute);
-    app.use("/", othersRoute);
+    app.use("/", authRoute);
     app.use("/", userRoute);
     app.use("/", paymentRoute);
     app.use("/admin", adminRoute);
