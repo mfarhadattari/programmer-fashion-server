@@ -3,6 +3,71 @@ const { jwtVerify, adminVerify } = require("../middlewares/middlewares");
 const router = express.Router();
 const { ObjectId } = require("mongodb");
 
+// ! admin overview api
+router.get("/overview", jwtVerify, adminVerify, async (req, res) => {
+  const productCollection = req.productCollection;
+  const userCollection = req.userCollection;
+  const paymentCollection = req.paymentCollection;
+  const orderCollection = req.orderCollection;
+  const cartCollection = req.cartCollection;
+
+  const totalProduct = await productCollection.estimatedDocumentCount();
+  const totalCustomer = await userCollection.countDocuments({
+    role: { $exists: false },
+  });
+  const totalCart = await cartCollection.estimatedDocumentCount();
+
+  // payment info
+  const paymentPipeline = [
+    {
+      $group: {
+        _id: "$month",
+        totalAmount: { $sum: "$amount" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: "$_id",
+        totalAmount: 1,
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+  ];
+  const paymentInfo = await paymentCollection
+    .aggregate(paymentPipeline)
+    .toArray();
+
+  // Order info
+  const orderPipeline = [
+    {
+      $group: {
+        _id: "$month",
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        month: "$_id",
+        count: 1,
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+  ];
+  const OrderInfo = await orderCollection.aggregate(orderPipeline).toArray();
+
+  res.send({ totalProduct, totalCustomer, totalCart, paymentInfo, OrderInfo });
+});
+
 // ! get all product api
 router.get("/all-products", jwtVerify, adminVerify, async (req, res) => {
   const productCollection = req.productCollection;

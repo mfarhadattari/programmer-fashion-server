@@ -64,6 +64,7 @@ router.post("/initialize-payment", async (req, res) => {
     address,
     products,
     timeDate,
+    month: new Date().getMonth() + 1,
     status: "Unpaid",
   };
   const addOrder = await orderCollection.insertOne(OrderInfo);
@@ -93,6 +94,7 @@ router.post("/payment-success/:tran_id", async (req, res) => {
     email: order.email,
     name: order.name,
     timeDate: order.timeDate,
+    month: new Date().getMonth() + 1,
     amount: order.totalAmount,
     tran_id,
   };
