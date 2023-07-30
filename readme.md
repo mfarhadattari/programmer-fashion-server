@@ -17,6 +17,7 @@
 - Admin Overview (GET): https://programmer-fashion.vercel.app/admin/overview
 - All Product (GET): https://programmer-fashion.vercel.app/admin/all-products
 - All Customer (GET): https://programmer-fashion.vercel.app/admin/all-customer
+- Customer Details (GET): https://programmer-fashion.vercel.app/admin/customer?email=
 - All Order (GET): https://programmer-fashion.vercel.app/admin/all-order
 - All Payment (GET): https://programmer-fashion.vercel.app/admin/all-payment
 - Add Product (POST): https://programmer-fashion.vercel.app/admin/add-product

@@ -126,6 +126,39 @@ router.get("/all-customer", jwtVerify, adminVerify, async (req, res) => {
   res.send(allCustomer.reverse());
 });
 
+// ! customer details api
+router.get("/customer", jwtVerify, adminVerify, async (req, res) => {
+  const userCollection = req.userCollection;
+  const orderCollection = req.orderCollection;
+  const cartCollection = req.cartCollection;
+  const paymentCollection = req.paymentCollection;
+  const query = { email: req.query.email };
+  const userInfo = await userCollection.findOne(query);
+  const orderInfo = await orderCollection
+    .find(query, {
+      sort: { timeDate: -1 },
+      projection: {
+        _id: 1,
+        totalAmount: 1,
+        timeDate: 1,
+        products: 1,
+        status: 1,
+      },
+    })
+    .toArray();
+  const cartInfo = await cartCollection
+    .find(query, { sort: { timeDate: -1 }, projection: { email: 0 } })
+    .toArray();
+  const paymentInfo = await paymentCollection
+    .find(query, {
+      sort: { timeDate: -1 },
+      projection: { email: 0, name: 0, month: 0 },
+    })
+    .toArray();
+
+  res.send({ userInfo, orderInfo, cartInfo, paymentInfo });
+});
+
 // ! all order api
 router.get("/all-order", jwtVerify, adminVerify, async (req, res) => {
   const orderCollection = req.orderCollection;
