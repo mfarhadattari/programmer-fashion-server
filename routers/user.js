@@ -3,6 +3,29 @@ const { jwtVerify } = require("../middlewares/middlewares");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
 
+// ! ---------------- User Overview --------------
+router.get("/my-overview", jwtVerify, async (req, res) => {
+  const userCollection = req.userCollection;
+  const cartCollection = req.cartCollection;
+  const orderCollection = req.orderCollection;
+  const paymentCollection = req.paymentCollection;
+  const query = { email: req.decoded.email };
+  const user = await userCollection.findOne(query, {
+    projection: { _id: 0, email: 1, displayName: 1, photoURL: 1 },
+  });
+  const totalCarts = await cartCollection.countDocuments(query);
+  const totalOrders = await orderCollection.countDocuments(query);
+  const payments = await paymentCollection
+    .find(query, { projection: { _id: 0, amount: 1 } })
+    .toArray();
+  const totalPayment = payments.reduce(
+    (totalAmount, payment) => payment.amount + totalAmount,
+    0
+  );
+
+  res.send({ userInfo: user, totalCarts, totalOrders, totalPayment });
+});
+
 //! Add to cart
 router.post("/add-to-cart", jwtVerify, async (req, res) => {
   const cartCollection = req.cartCollection;
@@ -72,7 +95,7 @@ router.get("/my-cart", jwtVerify, async (req, res) => {
 // ! MY Orders
 router.get("/my-orders", jwtVerify, async (req, res) => {
   const orderCollection = req.orderCollection;
-  const query = { email: req.decoded.email };
+  const query = { email: req.decoded.email, status: "Paid" };
   const myOrders = await orderCollection
     .find(query)
     .sort({ timeDate: -1 })
@@ -89,29 +112,6 @@ router.get("/my-payments", jwtVerify, async (req, res) => {
     .sort({ timeDate: -1 })
     .toArray();
   res.send(payments);
-});
-
-// ! ---------------- User Overview --------------
-router.get("/my-overview", jwtVerify, async (req, res) => {
-  const userCollection = req.userCollection;
-  const cartCollection = req.cartCollection;
-  const orderCollection = req.orderCollection;
-  const paymentCollection = req.paymentCollection;
-  const query = { email: req.decoded.email };
-  const user = await userCollection.findOne(query, {
-    projection: { _id: 0, email: 1, displayName: 1, photoURL: 1 },
-  });
-  const totalCarts = await cartCollection.countDocuments(query);
-  const totalOrders = await orderCollection.countDocuments(query);
-  const payments = await paymentCollection
-    .find(query, { projection: { _id: 0, amount: 1 } })
-    .toArray();
-  const totalPayment = payments.reduce(
-    (totalAmount, payment) => payment.amount + totalAmount,
-    0
-  );
-
-  res.send({ userInfo: user, totalCarts, totalOrders, totalPayment });
 });
 
 module.exports = router;
