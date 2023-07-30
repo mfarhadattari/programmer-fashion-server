@@ -34,7 +34,7 @@ router.get("/overview", jwtVerify, adminVerify, async (req, res) => {
     },
     {
       $sort: {
-        _id: 1,
+        month: 1,
       },
     },
   ];
@@ -59,7 +59,7 @@ router.get("/overview", jwtVerify, adminVerify, async (req, res) => {
     },
     {
       $sort: {
-        _id: 1,
+        month: 1,
       },
     },
   ];
