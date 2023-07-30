@@ -92,6 +92,14 @@ router.get("/my-cart", jwtVerify, async (req, res) => {
   res.send(myCart);
 });
 
+// ! order details
+router.get("/order/:id", jwtVerify, async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const query = { _id: new ObjectId(req.params.id) };
+  const order = await orderCollection.findOne(query);
+  res.send(order);
+});
+
 // ! MY Orders
 router.get("/my-orders", jwtVerify, async (req, res) => {
   const orderCollection = req.orderCollection;
