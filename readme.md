@@ -28,6 +28,7 @@
 - User Overview (GET): https://programmer-fashion.vercel.app/my-overview
 - User Payment (GET): https://programmer-fashion.vercel.app/my-payments
 - User Orders (GET): https://programmer-fashion.vercel.app/my-orders
+- Order Details (GET) : https://programmer-fashion.vercel.app/order/id
 - User Cart (GET): https://programmer-fashion.vercel.app/my-cart
 - User Total Cart (GET): https://programmer-fashion.vercel.app/total-cart
 - Add to Cart (POST): https://programmer-fashion.vercel.app/add-to-cart
@@ -59,5 +60,6 @@
 - Payment Failed (POST) : https://programmer-fashion.vercel.app/payment-failed/tran_id
 
 # Middlewares
+
 - jwtVerify
 - adminVerify

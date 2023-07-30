@@ -136,6 +136,19 @@ router.get("/all-order", jwtVerify, adminVerify, async (req, res) => {
   res.send(allOrder);
 });
 
+// ! approve order api
+router.patch("/approve-order/:id", jwtVerify, adminVerify, async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const query = { _id: new ObjectId(req.params.id) };
+  const approveOrderDoc = {
+    $set: {
+      status: "Approve",
+    },
+  };
+  const approveResult = await orderCollection.updateOne(query, approveOrderDoc);
+  res.send(approveResult);
+});
+
 // ! all payment api
 router.get("/all-payment", jwtVerify, adminVerify, async (req, res) => {
   const paymentCollection = req.paymentCollection;
