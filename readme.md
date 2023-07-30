@@ -19,6 +19,7 @@
 - All Customer (GET): https://programmer-fashion.vercel.app/admin/all-customer
 - Customer Details (GET): https://programmer-fashion.vercel.app/admin/customer/id
 - All Order (GET): https://programmer-fashion.vercel.app/admin/all-order
+- Approve Order (PATCH): https://programmer-fashion.vercel.app/admin/approve-order/id
 - All Payment (GET): https://programmer-fashion.vercel.app/admin/all-payment
 - Add Product (POST): https://programmer-fashion.vercel.app/admin/add-product
 - Delete Product (DELETE): https://programmer-fashion.vercel.app/admin/delete-product/id
