@@ -127,7 +127,7 @@ router.get("/all-customer", jwtVerify, adminVerify, async (req, res) => {
 });
 
 // ! customer details api
-router.get("/customer/:id",jwtVerify, adminVerify, async (req, res) => {
+router.get("/customer/:id", jwtVerify, adminVerify, async (req, res) => {
   const userCollection = req.userCollection;
   const orderCollection = req.orderCollection;
   const cartCollection = req.cartCollection;
@@ -142,6 +142,7 @@ router.get("/customer/:id",jwtVerify, adminVerify, async (req, res) => {
       projection: {
         _id: 1,
         totalAmount: 1,
+        tran_id: 1,
         timeDate: 1,
         products: 1,
         status: 1,
