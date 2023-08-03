@@ -203,4 +203,11 @@ router.post("/add-member", jwtVerify, adminVerify, async (req, res) => {
   res.send(addMemberResult);
 });
 
+// ! our team api
+router.get("/team-members", jwtVerify, adminVerify, async (req, res) => {
+  const teamCollection = req.teamCollection;
+  const members = await teamCollection.find().toArray();
+  res.send(members);
+});
+
 module.exports = router;

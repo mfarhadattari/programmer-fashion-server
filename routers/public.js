@@ -76,7 +76,7 @@ router.get("/testimonials", async (req, res) => {
 // !------------------- our teams info ------------------
 router.get("/our-teams", async (req, res) => {
   const teamCollection = req.teamCollection;
-  const ourTeams = await teamCollection.find().toArray();
+  const ourTeams = await teamCollection.find({}, {projection: {_id: 1, name: 1, image: 1, position: 1}}).toArray();
   res.send(ourTeams);
 });
 
