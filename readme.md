@@ -22,6 +22,7 @@
 - Approve Order (PATCH): https://programmer-fashion.vercel.app/admin/approve-order/id
 - All Payment (GET): https://programmer-fashion.vercel.app/admin/all-payment
 - Add Product (POST): https://programmer-fashion.vercel.app/admin/add-product
+- Add Product (POST): https://programmer-fashion.vercel.app/admin/add-member
 - Delete Product (DELETE): https://programmer-fashion.vercel.app/admin/delete-product/id
 - Update Product (PATCH): https://programmer-fashion.vercel.app/admin/update-product/id
 

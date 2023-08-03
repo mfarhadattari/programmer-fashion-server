@@ -195,4 +195,12 @@ router.get("/all-payment", jwtVerify, adminVerify, async (req, res) => {
   res.send(allPayments);
 });
 
+// ! add team member
+router.post("/add-member", jwtVerify, adminVerify, async (req, res) => {
+  const teamCollection = req.teamCollection;
+  const memberInfo = req.body;
+  const addMemberResult = await teamCollection.insertOne(memberInfo);
+  res.send(addMemberResult);
+});
+
 module.exports = router;
