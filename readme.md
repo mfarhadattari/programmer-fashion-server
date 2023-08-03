@@ -1,6 +1,6 @@
 # -----------| PROGRAMMER FASHION |-------------
 
-### ---- This is the backend of programmer fashion ----
+An Ecommerce web application with an admin management system. User authentication system using Firebase and JWT token. Payment Using SSL Commerce.
 
 # URL
 
